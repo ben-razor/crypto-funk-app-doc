@@ -187,7 +187,7 @@ export class CryptoFunkWrapper {
         this.address = contractAddress;
         this.contract.options.address = contractAddress;
     }
-
+}
 ```
 
 Back in our main App.js file we use these helpers to deploy the contract:

@@ -87,7 +87,7 @@ npm start
 
 DApps on the web communicate with Ethereum using a library called web3.js. 
 
-Nervos DApps are no different but as Nervos has a different system design to Ethereum, it must provide it's own interface. In web3.js, this means supplying a custom *provider*.
+Nervos DApps are no different but as Nervos has a different system design to Ethereum, it must provide its own interface. In web3.js, this means supplying a custom *provider*.
 
 ```bash
 yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6

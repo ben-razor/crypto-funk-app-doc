@@ -82,7 +82,7 @@ Creating a React app is simple. At a command line we type:
 ```bash
 npx create-react-app crypto-funk-app
 cd crypto-funk-app
-npm start
+yarn start
 ```
 
 DApps on the web communicate with Ethereum using a library called web3.js. 

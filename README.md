@@ -39,7 +39,7 @@ contract CryptoPunksMarket {
     mapping (uint => address) public punkIndexToAddress;
 ```
 
-The first step was to remove the Crypto Punk hash and allow a hash to provided when the contract is deployed, along with the number of images (totalSupply) the source image contains:
+The first step was to remove the Crypto Punk hash and allow a hash of the image to be provided when the contract is deployed, along with the number of characters (totalSupply) the image contains:
 
 ```solidity
 contract CryptoFunkMarket {
@@ -57,11 +57,13 @@ contract CryptoFunkMarket {
     }
 ```
 
-With these changes made and some updates to run on more recent versions of solidity. We are ready to port to Nervos.
+With these changes made we are ready to port to Nervos.
 
 ### 2. Modify the Ethereum contract to run on Nervos
 
 This is an easy one. No changes need to be made to the contract as Nervos provides an EVM compatible engine called **Polyjuice**. Contracts are written in standard Ethereum Solidity using the nice tooling Ethereum has available, and then run without changes on Nervos.
+
+Ethereum [Truffle](https://www.trufflesuite.com/tutorial) is used to compile the contract. This generates a JSON file with the same name as your contract, this defines the allowed methods of the contract, and will be imported later when creating the front end for the DApp.
 
 ### 3. Modify the front end code
 
@@ -216,5 +218,103 @@ async function createWeb3() {
     console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
     return null;
 }
+```
+
+In a helper file called CryptoFunkWrapper.js, we add the JSON outputted by the Truffle compiler to our includes, and then add a function to use the web3 interface to deploy our contract:
+
+```javascript 
+import * as CryptoFunkMarket from './CryptoFunkMarket.json';
+
+export class CryptoFunkWrapper {
+    constructor(web3) {
+        this.address = null;
+	this.web3 = web3;
+	this.contract = new web3.eth.Contract(CryptoFunkMarket.abi);
+    }
+
+    async deploy(fromAddress, name, symbol, hash, img_count) {
+	const deployTx = await (this.contract
+		.deploy({
+				data: CryptoFunkMarket.bytecode,
+				arguments: [name, symbol, hash, img_count]
+		})
+		.send({
+				...DEFAULT_SEND_OPTIONS,
+				from: fromAddress,
+				to: '0x0000000000000000000000000000000000000000'
+		})
+		);
+
+	this.useDeployed(deployTx.contractAddress);
+    }
+    
+    useDeployed(contractAddress) {
+        this.address = contractAddress;
+        this.contract.options.address = contractAddress;
+    }
+}
+```
+
+Back in our main App.js file we use these helpers to deploy the contract:
+
+```javascript
+   async function deployContract() {
+        const _contract = new CryptoFunkWrapper(web3);
+
+        try {
+            setDeployTxHash(undefined);
+            setTransactionInProgress(true);
+
+            const transactionHash = await _contract.deploy(account,
+            "CRYPTOFUNK",
+            "☮",
+            "f50027cdefc8f564d4c1fac14b5a656c5e452476e490acac827dd00e5d9b0f8e",
+            4
+            );
+
+            setDeployTxHash(transactionHash);
+            setExistingContractAddress(_contract.address);
+            toast(
+                'Successfully deployed a smart-contract. You can now proceed to get or set the value in a smart contract.',
+                { type: 'success' }
+            );
+        } catch (error) {
+            console.error(error);
+            toast.error(
+                'There was an error sending your transaction. Please check developer console.'
+            );
+        } finally {
+            setTransactionInProgress(false);
+        }
+    }
+```
+
+**Deployment Complete!**
+
+### 5. Interacting With The Deployed Contract
+
+And that's about all that's needed for the deployment. We can now interact with the contract exactly as if it was an Ethereum contract running on the ethereum network.
+
+Firstly, in our helper file called CryptoFunkWrapper.js, we set up helper functions to wrap the methods of the contract.
+
+```javascript
+   async punksRemainingToAssign(fromAddress) {
+        const data = await this.contract.methods.punksRemainingToAssign().call({ from: fromAddress });
+        return parseInt(data, 10);
+    }
+
+```
+
+And then in our App.js we call these helper functions and update the interface:
+
+```javascript
+    const updatePunkOwners = async function() {
+        let punkIndexToAddressNew = [];
+        for(let i = 0; i < 4; i++) {
+            let address = await contract.punkIndexToAddress(i);
+            punkIndexToAddressNew[i] = address;
+        }
+        setPunkIndexToAddress(punkIndexToAddressNew);
+    }
 ```
 

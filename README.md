@@ -1,10 +1,10 @@
 ## How to port a Classic Ethereum DApp To Nervos Network
 
-Ethereum as a platform has been a launchpad for popular DApps from DeFi to NFTs and more. As blockchain technology develops, interoperability of different chains will become ever more important. [Nervos Network](https://www.nervos.org/) has a new platform for DApps that focuses on interoperability of DApps from different blockchains.
+Ethereum as a platform has been a launchpad for popular DApps from DeFi to NFTs and more. As blockchain technology develops, interoperability of different chains will become ever more important. [Nervos Network](https://www.nervos.org/) has created a new platform for DApps that enables the interoperability of DApps created for different blockchains.
 
 In this article, we take you through the process of porting an existing DApp from Ethereum to Nervos.
 
-Nervos is a dual layer system. A proof of work Layer 1 provides security while layer 2 allows fast DApps to be deployed using code from existing blockchains. At present, DApps for the Ethereum Virtual Machine are supported. Nervos plan to provide support for more platforms in the future.
+Nervos is a dual layer system. A proof of work Layer 1 provides security while layer 2 allows fast DApps to be deployed using code from existing blockchains. At present, DApps for the Ethereum Virtual Machine are supported. Nervos plans to provide support for more platforms in the future.
 
 An additional strength of deploying to Nervos is that it allows mixing and matching of wallets from various blockchains for use with the deployed DApp.
 
@@ -19,7 +19,7 @@ What better way to demonstrate the potential of Nervos network's interoperabilit
 
 We call the ported app **Crypto Funk**. You can view the source on GitHub:
 
-[Crypto Funk Github](https://github.com/ben-razor/crypto-funk-app-doc/tree/main/crypto-funk-app-tutorial/src)
+[Crypto Funk Source Code on Github](https://github.com/ben-razor/crypto-funk-app-doc/tree/main/crypto-funk-app-tutorial/src)
 
 In this tutorial we will focus on 3 source files:
 
@@ -348,9 +348,9 @@ And then in our App.js we call these helper functions and update the interface:
     }
 ```
 
-If you need to see how this all fits together don't forget to check the source in [App.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/crypto-funk-app-tutorial/src/App.js). This also shows how the other contract methods link up to display the completed UI.
+If you need to see how this all fits together don't forget to check the source in [App.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/crypto-funk-app-tutorial/src/App.js) and [CryptoFunkWrapper.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/crypto-funk-app-tutorial/src/lib/contracts/CryptoFunkWrapper.js). This also shows how the other contract methods link up to display the completed UI.
 
-Only the getPunk method to claim Crytpo Funks with no owner is implemented in this tutorial. All the other methods follow the same pattern so you're free to create your own set of classic NFTs and add in the code to trade them.
+Only the getPunk method to claim Crypto Funks with no owner is implemented in this tutorial. All the other methods follow the same pattern so you're free to create your own set of classic NFTs and add in the code to trade them.
 
 ### 8. Wrapping Up
 

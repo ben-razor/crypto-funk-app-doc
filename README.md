@@ -47,7 +47,7 @@ contract CryptoPunksMarket {
     mapping (uint => address) public punkIndexToAddress;
 ```
 
-The first step was to remove the Crypto Punk hash and allow a hash of the image to be provided when the contract is deployed, along with the number of characters (totalSupply) the image contains:
+The first step is to remove the Crypto Punk hash and allow a hash of the image to be provided when the contract is deployed, along with the number of NFTs (totalSupply) the image contains:
 
 ```solidity
 contract CryptoFunkMarket {

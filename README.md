@@ -175,7 +175,7 @@ Most of the problems centered around the use of class properties and ES2020 opti
 
 [Modified Godwoken integration source code](https://github.com/ben-razor/crypto-funk-app-doc/tree/main/modified-src/nervos-godwoken-integration/lib)
 
-> :warning: **We would not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
+> :warning: **We do not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
 
 ### 4. Continuing to modify the front end code
 

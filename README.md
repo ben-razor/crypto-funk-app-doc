@@ -163,7 +163,7 @@ class AddressTranslator {
 
 Most of the problems centered around the use of class properties and ES2020 optional chaining. There were a number of other examples that needed changing in similar ways. The source code for these changes can be found here:
 
-https://github.com/ben-razor/crypto-funk-app-doc/tree/main/modified-src/nervos-godwoken-integration/lib
+[Modified Godwoken integration source code](https://github.com/ben-razor/crypto-funk-app-doc/tree/main/modified-src/nervos-godwoken-integration/lib)
 
 **We would not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
 

@@ -116,7 +116,7 @@ import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 A quirk to watch out for is that although contract methods will be called with an Ethereum address. Addresses returned by the contract are Godwoken addresses. Nervos suggest importing nervos-godwoken-integration@0.0.6. This allows Ethereum addresses to be converted into Godwoken addresses. This didn't play well with React so the module is included in the Crypto Funk source and imported locally:
 
 ```javascript
-import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
+import { AddressTranslator } from './nervos-godwoken-integration';
 ```
 
 #### Create deployment functions

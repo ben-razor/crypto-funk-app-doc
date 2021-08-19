@@ -266,7 +266,9 @@ export class CryptoFunkWrapper {
 Back in our main App.js file we use these helpers to deploy the contract:
 
 ```javascript
-   async function deployContract() {
+    const account = accounts[0];
+    
+    async function deployContract() {
         const _contract = new CryptoFunkWrapper(web3);
 
         try {

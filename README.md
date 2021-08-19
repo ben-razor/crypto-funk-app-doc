@@ -119,12 +119,46 @@ You may need an additional loader to handle the result of these loaders.
 ```
 
 This was changed to 
-```
-    {
-                    const rawTx = result.rawTransaction;
-                    rawTx.value = ethers_1.ethers.BigNumber.from(rawTx.value?.hex ?? 0);
-                    result.rawTransaction = rawTx;
-                }
+```javascript
+{
+    const rawTx = result.rawTransaction;
+    let val = 0;
+    if(rawTx && rawTx.value) {
+        val = rawTx.value.hex;
+    }
+    rawTx.value = ethers_1.ethers.BigNumber.from(val);
+    result.rawTransaction = rawTx;
+}
 ```
 
-Most of the problems centered around the creator of the libraries use of class properties and optional chaining 
+```
+./node_modules/nervos-godwoken-integration/lib/address/index.js 57:9
+Module parse failed: Unexpected token (57:9)
+File was processed with these loaders:
+ * ./node_modules/react-scripts/node_modules/babel-loader/lib/index.js
+You may need an additional loader to handle the result of these loaders.
+| 
+| class AddressTranslator {
+>   _config;
+|   _deploymentConfig;
+    constructor(config) {
+        if (config) {
+            this._config = config;
+        }
+|
+```
+
+This was changed to:
+
+```javascript
+class AddressTranslator {
+    constructor(config) {
+        if (config) {
+            this._config = config;
+        }
+```
+
+Most of the problems centered around the creator of the libraries use of class properties and optional chaining. There were a number of other examples that needed changing in similar ways. The source code for these changes can be found here:
+
+
+We would not recommend using this code. But waiting for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented. 

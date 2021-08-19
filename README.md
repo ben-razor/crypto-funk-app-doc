@@ -195,43 +195,47 @@ Back in our main App.js file we use these helpers to deploy the contract:
 ```javascript
 function App() {
     const [web3, setWeb3] = useState(null);
+    const [contract, setContract] = useState();
     const [accounts, setAccounts] = useState([]);
-    
+    const [transactionInProgress, setTransactionInProgress] = useState(false);
+    const toastId = React.useRef(null);
+
+    /** Initialize web3 and get user accounts from connected wallet */
     useEffect(() => {
         if (web3) { return; }
 
         (async () => {
             const _web3 = await createWeb3();
             setWeb3(_web3);
+
             const _accounts = [window.ethereum.selectedAddress];
             setAccounts(_accounts);
-	    
-	    if (_accounts && _accounts[0]) {
-                let res = await _web3.eth.getBalance(_accounts[0]);
-                const _l2Balance = BigInt(res).value;
-                setL2Balance(_l2Balance);
-            }
-
         })();
     });
-    
+
     const account = accounts[0];
-    
+
+    /** Initialize the app with a previously loaded contract if one is available */
+    useEffect(() => {
+        if(web3 && CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS) {
+            setExistingContractAddress(CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS);
+        }
+    }, [web3])
+
+    /** Deploy The crypto funk contract */
     async function deployContract() {
         const _contract = new CryptoFunkWrapper(web3);
 
         try {
-            setDeployTxHash(undefined);
             setTransactionInProgress(true);
 
-            const transactionHash = await _contract.deploy(account,
-            "CRYPTOFUNK",
-            "☮",
-            "f50027cdefc8f564d4c1fac14b5a656c5e452476e490acac827dd00e5d9b0f8e",
-            4
+            await _contract.deploy(account,
+                "CRYPTOFUNK",
+                "☮",
+                "f50027cdefc8f564d4c1fac14b5a656c5e452476e490acac827dd00e5d9b0f8e",
+                4
             );
 
-            setDeployTxHash(transactionHash);
             setExistingContractAddress(_contract.address);
             toast(
                 'Successfully deployed a smart-contract. You can now proceed to get or set the value in a smart contract.',
@@ -246,19 +250,30 @@ function App() {
             setTransactionInProgress(false);
         }
     }
- 
-    return (
+
+    /** Helper to update things when the contract address is changed on init or deploy */
+    const setExistingContractAddress = async function (contractAddress) {
+        const _contract = new CryptoFunkWrapper(web3);
+        _contract.useDeployed(contractAddress.trim());
+        setContract(_contract);
+    }
+
+   return (
         <div>
             <div className="center-panel">
                 <h1>Crypto Funk</h1>
                 <p>Really exclusive, high quality NFT artworks</p>
+
+                <div class="contractDeploymentPanel">
+                    <button onClick={deployContract} disabled={!account}>Deploy contract</button>
+                    <br />
+                    <hr />
+                    Deployed contract address: <b>{contract?.address || '-'}</b> <br />
+                    <ToastContainer />
+                </div>
+
             </div>
-	</div>
-	<button onClick={deployContract} disabled={!l2Balance}>
-             Deploy contract
-        </button>
-        <br />
-        Deployed contract address: <b>{contract?.address || '-'}</b> <br />
+        </div>
     );
  
 }

@@ -95,7 +95,7 @@ yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6
 
 This command installs two modules. The first is for the Polyjuice provider. The second is for integration with **Godwoken**. Godwoken is the Nervos layer two network where the ported Ethereum app will be deployed.
 
-The packages are brought into your React application by using imports:
+The packages are brought into your React application by using imports in App.js:
 
 ```javascript
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';

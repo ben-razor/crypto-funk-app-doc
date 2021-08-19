@@ -12,6 +12,7 @@ What better way to demonstrate the potential of Nervos network's interoperabilit
 (NFT) artwork, **Crypto Punks**.
 
 [Crypto Punks Website](https://www.larvalabs.com/cryptopunks)
+
 [Crypto Punks Github](https://github.com/larvalabs/cryptopunks)
 
 We call the ported app **Crypto Funk**. You can view it's source on GitHub:
@@ -38,7 +39,7 @@ contract CryptoPunksMarket {
     mapping (uint => address) public punkIndexToAddress;
 ```
 
-The first step was to remove the Crypto Punk has and allow a hash to provided when the contract is deployed, along with the number of images (totalSupply) it contains:
+The first step was to remove the Crypto Punk hash and allow a hash to provided when the contract is deployed, along with the number of images (totalSupply) the source image contains:
 
 ```solidity
 contract CryptoFunkMarket {
@@ -91,7 +92,9 @@ import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 import { AddressTranslator } from 'nervos-godwoken-integration';
 ```
 
-> :warning: At the time of writing the libraries errored due to new Javascript that create-react-app is not set up to understand:
+### WARNING: Javascript Features used in these libraries are not supported by create-react-app
+
+> :warning: At the time of writing the libraries errored due to new Javascript features that create-react-app is not set up to understand:
 ```
 Support for the experimental syntax 'classProperties' isn't currently enabled
 
@@ -103,7 +106,7 @@ You may need an additional loader to handle the result of these loaders.
 |   constructor(forceBridgeUrl) {
 ```
 
-We tried multiple techniques to get around these errors but none of them would work. In the end we deleted and modified the offending elements in the source code in order to be able to complete the port in a reasonable time.
+We tried multiple techniques to get around these errors but none of them would work. In the end we deleted and modified the offending elements in the nervos-godwoken-integration source in order to be able to complete the port in a reasonable time.
 
 ```
 ./node_modules/nervos-godwoken-integration/lib/bridge/force-bridge-handler.js 49:151
@@ -158,7 +161,8 @@ class AddressTranslator {
         }
 ```
 
-Most of the problems centered around the creator of the libraries use of class properties and optional chaining. There were a number of other examples that needed changing in similar ways. The source code for these changes can be found here:
+Most of the problems centered around the use of class properties and ES2020 optional chaining. There were a number of other examples that needed changing in similar ways. The source code for these changes can be found here:
+
+**We would not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
 
 
-We would not recommend using this code. But waiting for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented. 

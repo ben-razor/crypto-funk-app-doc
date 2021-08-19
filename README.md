@@ -299,11 +299,59 @@ Back in our main App.js file we use these helpers to deploy the contract:
     }
 ```
 
+### 5. Deploying the contract
+
+In order to deploy the contract, MetaMask must be configured to point at the Godwoken network:
+
+[Configuring a Custom RPC in MetaMask](https://metamask.zendesk.com/hc/en-us/articles/360043227612-How-to-add-custom-Network-RPC)
+
+At the time of writing the following details should be used to connect to the Godwoken testnet:
+
+Network Name: Godwoken Testnet
+New RPC URL: http://godwoken-testnet-web3-rpc.ckbapp.dev
+Chain ID: 71393
+
+This opens the app in the browser and the deployContract() method is assigned to a button handler.
+
+The app is started by running:
+
+```bash
+yarn start
+```
+
+A button within the app calls deployContract() and after following through the MetaMask instructions, your DApp will be deployed.
+
 **Deployment Complete!**
 
-### 5. Interacting With The Deployed Contract
+### 6. Using the deployed contract
 
-And that's about all that's needed for the deployment. We can now interact with the contract exactly as if it was an Ethereum contract running on the ethereum network.
+Once the contract has been deployed, we are returned an address (_contract.address) and we can use this on the front end to interact with the contract.
+
+We add the following code to App.js to load the contract using the returned contract address.
+
+```javascript
+
+   const CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS = '0xEf948E02165551c7b9EfFCE1d5dACA0D270D5aA3';
+
+   const setExistingContractAddress = async function (contractAddress) {
+        setTransactionInProgress(true);
+        const _contract = new CryptoFunkWrapper(web3);
+        _contract.useDeployed(contractAddress.trim());
+
+        setContract(_contract);
+        setStoredValue(undefined);
+    }
+
+    useEffect(() => {
+        if(web3) {
+            setExistingContractAddress(CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS);
+        }
+    }, [web3]
+```
+
+### 7. Interacting With The Deployed Contract
+
+We can now interact with the contract exactly as if it was an Ethereum contract running on the ethereum network.
 
 Firstly, in our helper file called CryptoFunkWrapper.js, we set up helper functions to wrap the methods of the contract.
 
@@ -328,3 +376,6 @@ And then in our App.js we call these helper functions and update the interface:
     }
 ```
 
+### 8. Wrapping Up
+
+There is much more we could get into about how the UI interacts with the various features of the contract. But once the process of connecting to the Nervos network through the Godwoken provider is done, all the tutorials and source code and tools of Ethereum are available to use with few changes. Hopefully these together will provide a base for developing some amazing DApps on Nervos Network.

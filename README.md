@@ -99,11 +99,7 @@ The package is brought into your React application by using an import in App.js:
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 ```
 
-### 4. Continuing to modify the front end code
-
-Once the errors in the Godwoken integration node modules are patched, we can set to integrating these modules into the ported front end code.
-
-First we add the web3 node module that will be used to communicate with the Nervos network:
+Next we add the web3 node module that will be used to communicate with the Nervos network:
 
 ```bash
 yarn add web3
@@ -115,7 +111,7 @@ And add this to the includes in App.js:
 import Web3 from 'web3';
 ```
 
-We then create a function to create a web3 object configured with a Polyjuice provider (Note that you need a wallet like [MetaMask](https://metamask.io/) installed as this provides window.ethereum to your Javascript app in the browser):
+Now we can create a function to create a web3 object configured with a Polyjuice provider (Note that you need a wallet like [MetaMask](https://metamask.io/) installed as this provides window.ethereum to your Javascript app in the browser):
 
 ```javascript
 

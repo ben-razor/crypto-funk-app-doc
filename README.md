@@ -155,7 +155,7 @@ async function createWeb3() {
 }
 ```
 
-Next we create a helper file called CryptoFunkWrapper.js, we include the JSON outputted by the Truffle compiler, and then add a function to use the web3 interface to deploy our contract:
+Next we create a helper file called CryptoFunkWrapper.js, we include the JSON outputted by the Truffle compiler in Step 2, and then add a function to use the web3 interface to deploy our contract:
 
 ```javascript 
 import * as CryptoFunkMarket from './CryptoFunkMarket.json';
@@ -200,7 +200,7 @@ export class CryptoFunkWrapper {
 }
 ```
 
-Back in our main App.js file we use those helpers to deploy the contract:
+Back in our main App.js file we use the helpers from CryptoFunkWrapper.js to deploy the contract:
 
 ```javascript
 function App() {

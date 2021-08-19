@@ -1,6 +1,6 @@
 ## Crypto Funk - A port of Crypto Punks to Nervos Network
 
-To run it, use the following commands:
+To run it, try the following commands:
 
 ```
 git clone git@github.com:ben-razor/crypto-funk-app-doc.git

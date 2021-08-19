@@ -8,15 +8,17 @@ An additional strength of deploying to Nervos is that it allows mixing and match
 
 ### Porting Crypto Punks to Nervos
 
-What better way to demonstrate the potential of Nervos network's interoperability than to port a legendary and early example of Non Fungible Token 
-(NFT) artwork, **Crypto Punks***.
+What better way to demonstrate the potential of Nervos network's interoperability than to port the legendary early example of Non Fungible Token 
+(NFT) artwork, **Crypto Punks**.
 
 [Crypto Punks Website](https://www.larvalabs.com/cryptopunks)
 [Crypto Punks Github](https://github.com/larvalabs/cryptopunks)
 
-We will call the ported app **Crypto Funk**
+We call the ported app **Crypto Funk**. You can view it's source on GitHub:
 
 [Crypto Funk Github](https://github.com/ben-razor/crypto-funk-app)
+
+To port the app, we took the following steps.
 
 ### 1. Prepare the contract for porting
 
@@ -24,7 +26,7 @@ The [Solidity Smart Contract](https://github.com/larvalabs/cryptopunks/blob/mast
 
 The smart contract contains SHA-256 hash of the image containing all the crypto punks so that a buyer can verify the image they have is official.
 
-The ownership is assigned by mapping an index into the image to an ethereum address.
+The ownership is assigned by mapping an index into the image to an Ethereum address.
 
 ```solidity
 contract CryptoPunksMarket {
@@ -58,19 +60,71 @@ With these changes made and some updates to run on more recent versions of solid
 
 ### 2. Modify the Ethereum contract to run on Nervos
 
-This is an easy one. No changes need to be made to the contract as Nervos provides an EVM compatible engine called **Polyjuice**.
-
-The tooling 
+This is an easy one. No changes need to be made to the contract as Nervos provides an EVM compatible engine called **Polyjuice**. Contracts are written in standard Ethereum Solidity using the nice tooling Ethereum has available, and then run without changes on Nervos.
 
 ### 3. Modify the front end code
 
-Most of the changes needed to port an Ethereum DApp to Nervos involve the front end code.
+Most of the changes needed to port an Ethereum DApp to Nervos involve front end code. The Crypto Funk port was written using [ReactJS](https://reactjs.org/).
+
+Creating a React app is simple. At a command line we type:
+
+```bash
+npx create-react-app crypto-funk-app
+cd crypto-funk-app
+npm start
+```
 
 DApps on the web communicate with Ethereum using a library called web3.js. 
 
 Nervos DApps are no different but as Nervos has a different system design to Ethereum, it must provide it's own interface. In web3.js, this means supplying a custom *provider*.
 
-```javascript
-
+```bash
+yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6
 ```
 
+This command installs two modules. The first is for the Polyjuice provider. The second is for integration with **Godwoken**. Godwoken is the Nervos layer two network where the ported Ethereum app will be deployed.
+
+The packages are brought into your React application by using imports:
+
+```javascript
+import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
+import { AddressTranslator } from 'nervos-godwoken-integration';
+```
+
+> :warning: At the time of writing the libraries errored due to new Javascript that create-react-app is not set up to understand:
+```
+Support for the experimental syntax 'classProperties' isn't currently enabled
+
+You may need an additional loader to handle the result of these loaders.
+| 
+| class BridgeRPCHandler {
+>   client;
+| 
+|   constructor(forceBridgeUrl) {
+```
+
+We tried multiple techniques to get around these errors but none of them would work. In the end we deleted and modified the offending elements in the source code in order to be able to complete the port in a reasonable time.
+
+```
+./node_modules/nervos-godwoken-integration/lib/bridge/force-bridge-handler.js 49:151
+Module parse failed: Unexpected token (49:151)
+File was processed with these loaders:
+ * ./node_modules/react-scripts/node_modules/babel-loader/lib/index.js
+You may need an additional loader to handle the result of these loaders.
+| 
+|           const rawTx = result.rawTransaction;
+>           rawTx.value = ethers_1.ethers.BigNumber.from(((_rawTx$value = rawTx.value) === null || _rawTx$value === void 0 ? void 0 : _rawTx$value.hex) ?? 0);
+|           result.rawTransaction = rawTx;
+|         }
+```
+
+This was changed to 
+```
+    {
+                    const rawTx = result.rawTransaction;
+                    rawTx.value = ethers_1.ethers.BigNumber.from(rawTx.value?.hex ?? 0);
+                    result.rawTransaction = rawTx;
+                }
+```
+
+Most of the problems centered around the creator of the libraries use of class properties and optional chaining 

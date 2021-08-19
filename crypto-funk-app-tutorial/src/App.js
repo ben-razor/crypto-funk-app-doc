@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 /** DApp related imports */
 import Web3 from 'web3';
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
+import { AddressTranslator } from './nervos-godwoken-integration';
 import { CryptoFunkWrapper } from './lib/contracts/CryptoFunkWrapper';
 
 /** Config required by Polyjuice to create a provider */
@@ -16,8 +17,11 @@ const CONFIG = {
 	ETH_ACCOUNT_LOCK_CODE_HASH: '0xdeec13a7b8e100579541384ccaf4b5223733e4a5483c3aec95ddc4c1d5ea5b22'
 };
 
-/** Address of previously deployed contract */
-const CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS = '0xEf948E02165551c7b9EfFCE1d5dACA0D270D5aA3';
+/** 
+ * Address of previously deployed contract. After deploying a contract, copy its address here
+ * and the new contract will be used when the page is reloaded.
+*/
+const CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS = '0xEB7AAb244Fb4BE729635A4517510c5Abad6DA5AE';
 
 /**
  * Configure Web3 to interact with Nervos L2 network.
@@ -60,8 +64,18 @@ function App() {
 
             const _accounts = [window.ethereum.selectedAddress];
             setAccounts(_accounts);
+
+            (async () => {
+                window.ethereum.on("accountsChanged", async function() {
+                    let newAccounts = [window.ethereum.selectedAddress];
+                    setAccounts(newAccounts);
+                });
+            })();
         })();
     });
+
+    useEffect(() => {
+        }, []);
 
     const account = accounts[0];
 
@@ -225,6 +239,11 @@ function App() {
         if(owner && owner !== zeroAddress) {
             owned = true;
         }
+        let polyjuiceAddress = '';
+        if(account) {
+            const addressTranslator = new AddressTranslator();
+            polyjuiceAddress = addressTranslator.ethAddressToGodwokenShortAddress(account);
+        }
         return <div className="nft-details" key={index}>
             <div className={"image-nft image-" + index}></div>
             <div>{name}</div>
@@ -234,7 +253,7 @@ function App() {
                     {!owned &&
                         <button onClick={() => getPunk(index)}>Get</button>
                     }
-                    {owned && (isAddress(punkIndexToAddress[index]) ? <div>Yours</div> : <div>Owned</div>)}
+                    {owned && ((punkIndexToAddress[index].toLowerCase() === polyjuiceAddress.toLowerCase()) ? <div>Yours</div> : <div>Owned</div>)}
                     </div>
                     <div className="punksOfferedForSale">Sell for: {price}</div>
                     <div className="punkBid">Bid: {bidPrice}</div>
@@ -267,7 +286,7 @@ function App() {
                     </Fragment>
                 }
 
-                <div class="contractDeploymentPanel">
+                <div className="contractDeploymentPanel">
                     <button onClick={deployContract} disabled={!account}>
                         Deploy contract
                     </button>

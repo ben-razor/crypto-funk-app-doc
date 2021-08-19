@@ -74,9 +74,6 @@ function App() {
         })();
     });
 
-    useEffect(() => {
-        }, []);
-
     const account = accounts[0];
 
     /** Initialize the app with a previously loaded contract if one is available */

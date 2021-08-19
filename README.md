@@ -315,8 +315,6 @@ At the time of writing the following details should be used to connect to the Go
 
 **Chain ID**: 71393
 
-This opens the app in the browser and the deployContract() method is assigned to a button handler.
-
 The app is started by running:
 
 ```bash

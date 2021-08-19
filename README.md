@@ -33,7 +33,7 @@ To port the app, we took the following steps.
 
 The [Solidity Smart Contract](https://github.com/larvalabs/cryptopunks/blob/master/contracts/CryptoPunksMarket.sol) for Crypto Punks is open source under the MIT licence but the artwork is not covered by the licence, so we need to remove the data that is specific to the artwork and provide a way for users of the contract to provide their own artwork.
 
-The smart contract contains SHA-256 hash of the image containing all the crypto punks so that a buyer can verify the image they have is official.
+The smart contract contains a SHA-256 hash of the image containing all the crypto punks so that a buyer can verify the image they have is official.
 
 The ownership is assigned by mapping an index into the image to an Ethereum address.
 

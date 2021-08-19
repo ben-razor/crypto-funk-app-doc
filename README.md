@@ -268,6 +268,28 @@ export class CryptoFunkWrapper {
 Back in our main App.js file we use these helpers to deploy the contract:
 
 ```javascript
+function App() {
+    const [web3, setWeb3] = useState(null);
+    const [accounts, setAccounts] = useState([]);
+    
+    useEffect(() => {
+        if (web3) { return; }
+
+        (async () => {
+            const _web3 = await createWeb3();
+            setWeb3(_web3);
+            const _accounts = [window.ethereum.selectedAddress];
+            setAccounts(_accounts);
+	    
+	    if (_accounts && _accounts[0]) {
+                let res = await _web3.eth.getBalance(_accounts[0]);
+                const _l2Balance = BigInt(res).value;
+                setL2Balance(_l2Balance);
+            }
+
+        })();
+    });
+    
     const account = accounts[0];
     
     async function deployContract() {
@@ -299,6 +321,22 @@ Back in our main App.js file we use these helpers to deploy the contract:
             setTransactionInProgress(false);
         }
     }
+ 
+    return (
+        <div>
+            <div className="center-panel">
+                <h1>Crypto Funk</h1>
+                <p>Really exclusive, high quality NFT artworks</p>
+            </div>
+	</div>
+	<button onClick={deployContract} disabled={!l2Balance}>
+             Deploy contract
+        </button>
+        <br />
+        Deployed contract address: <b>{contract?.address || '-'}</b> <br />
+    );
+ 
+}
 ```
 
 ### 5. Deploying the contract

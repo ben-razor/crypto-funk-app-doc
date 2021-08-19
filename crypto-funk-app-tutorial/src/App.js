@@ -1,20 +1,29 @@
+/** React and UI imports */
 import './App.css';
 import React, { useEffect, useState, Fragment } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/** DApp related imports */
 import Web3 from 'web3';
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 import { CryptoFunkWrapper } from './lib/contracts/CryptoFunkWrapper';
 
+/** Config required by Polyjuice to create a provider */
 const CONFIG = {
 	WEB3_PROVIDER_URL: 'https://godwoken-testnet-web3-rpc.ckbapp.dev',
 	ROLLUP_TYPE_HASH: '0x4cc2e6526204ae6a2e8fcf12f7ad472f41a1606d5b9624beebd215d780809f6a',
 	ETH_ACCOUNT_LOCK_CODE_HASH: '0xdeec13a7b8e100579541384ccaf4b5223733e4a5483c3aec95ddc4c1d5ea5b22'
 };
 
+/** Address of previously deployed contract */
 const CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS = '0xEf948E02165551c7b9EfFCE1d5dACA0D270D5aA3';
 
+/**
+ * Configure Web3 to interact with Nervos L2 network.
+ * 
+ * @returns A Web3 object configured for use with Nervos L2 network
+ */
 async function createWeb3() {
     if (window.ethereum) {
         const godwokenRpcUrl = CONFIG.WEB3_PROVIDER_URL;
@@ -33,6 +42,7 @@ async function createWeb3() {
     return null;
 }
 
+/** React app entry point */
 function App() {
     const [web3, setWeb3] = useState(null);
     const [contract, setContract] = useState();
@@ -40,6 +50,7 @@ function App() {
     const [transactionInProgress, setTransactionInProgress] = useState(false);
     const toastId = React.useRef(null);
 
+    /** Initialize web3 and get user accounts from connected wallet */
     useEffect(() => {
         if (web3) { return; }
 
@@ -54,12 +65,14 @@ function App() {
 
     const account = accounts[0];
 
+    /** Initialize the app with a previously loaded contract if one is available */
     useEffect(() => {
-        if(web3) {
+        if(web3 && CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS) {
             setExistingContractAddress(CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS);
         }
     }, [web3])
 
+    /** Display a toast when transactions are in progress */
     useEffect(() => {
         if (transactionInProgress && !toastId.current) {
             toastId.current = toast.info(
@@ -81,6 +94,7 @@ function App() {
         }
     }, [transactionInProgress]);
 
+    /** Deploy The crypto funk contract */
     async function deployContract() {
         const _contract = new CryptoFunkWrapper(web3);
 
@@ -109,15 +123,20 @@ function App() {
         }
     }
 
+    /** Helper to update things when the contract address is changed on init or deploy */
     const setExistingContractAddress = async function (contractAddress) {
         const _contract = new CryptoFunkWrapper(web3);
         _contract.useDeployed(contractAddress.trim());
         setContract(_contract);
     }
 
+    /**
+     * A set of methods to interact with the deployed contract.
+     */
     const [punkIndexToAddress, setPunkIndexToAddress] = useState([]);
     const [punksOfferedForSale, setPunksOfferedForSale] = useState([]);
     const [punkBids, setPunkBids] = useState([]);
+    
     const updatePunkOwners = async function() {
         let punkIndexToAddressNew = [];
         for(let i = 0; i < 4; i++) {
@@ -188,6 +207,8 @@ function App() {
     function isAddress(address) {
         return address && address !== zeroAddress;
     }
+
+    /** UI Helper function to draw the details for a Crypto Funk */
     function getPunkPanel(name, index) {
         let price = 0;
         let offer = punksOfferedForSale[index];
@@ -221,40 +242,42 @@ function App() {
             }
         </div>
     }
+
+    /** Render the UI */
     return (
-    <div>
-        <div className="center-panel">
-            <h1>Crypto Funk</h1>
-            <p>Really exclusive, high quality NFT artworks</p>
+        <div>
+            <div className="center-panel">
+                <h1>Crypto Funk</h1>
+                <p>Really exclusive, high quality NFT artworks</p>
 
-            <Fragment>
-                <div className="image-panel">
-                { 
-                    punkNames.map((name, index) => {
-                        return getPunkPanel(name, index);
-                    })
-                }
-                </div>
-            </Fragment> 
-
-            { !punkIndexToAddress.length &&
                 <Fragment>
-                    <h3>CHILL OUT</h3>
-                    <p>A contract is loading...</p>
-                </Fragment>
-            }
+                    <div className="image-panel">
+                    { 
+                        punkNames.map((name, index) => {
+                            return getPunkPanel(name, index);
+                        })
+                    }
+                    </div>
+                </Fragment> 
 
-            <div class="contractDeploymentPanel">
-                <button onClick={deployContract} disabled={!account}>
-                    Deploy contract
-                </button>
-                <br />
-                <hr />
-                Deployed contract address: <b>{contract?.address || '-'}</b> <br />
-                <ToastContainer />
+                { !punkIndexToAddress.length &&
+                    <Fragment>
+                        <h3>CHILL OUT</h3>
+                        <p>A contract is loading...</p>
+                    </Fragment>
+                }
+
+                <div class="contractDeploymentPanel">
+                    <button onClick={deployContract} disabled={!account}>
+                        Deploy contract
+                    </button>
+                    <br />
+                    <hr />
+                    Deployed contract address: <b>{contract?.address || '-'}</b> <br />
+                    <ToastContainer />
+                </div>
+
             </div>
-
-        </div>
         </div>
     );
 }

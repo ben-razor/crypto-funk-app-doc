@@ -19,7 +19,7 @@ What better way to demonstrate the potential of Nervos network's interoperabilit
 
 We call the ported app **Crypto Funk**. You can view it's source on GitHub:
 
-[Crypto Funk Github](https://github.com/ben-razor/crypto-funk-app)
+[Crypto Funk Github](https://github.com/ben-razor/crypto-funk-app/tree/main/src)
 
 In this article will focus on 3 source files:
 

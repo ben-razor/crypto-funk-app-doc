@@ -111,7 +111,7 @@ And add this to the includes in App.js:
 import Web3 from 'web3';
 ```
 
-Now we can create a function to create a web3 object configured with a Polyjuice provider (Note that you need a wallet like [MetaMask](https://metamask.io/) installed as this provides window.ethereum to your Javascript app in the browser):
+Now we can create a function to create a web3 object configured with a Polyjuice provider (Note that you need a wallet like [MetaMask](https://metamask.io/) installed as this provides window.ethereum to your JavaScript app in the browser):
 
 ```javascript
 

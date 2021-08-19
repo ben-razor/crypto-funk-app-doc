@@ -1,0 +1,34 @@
+{
+  "name": "nervos-godwoken-integration",
+  "version": "0.0.6",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@ckb-lumos/base": "^0.16.0",
+    "@ckb-lumos/helpers": "^0.16.0",
+    "@lay2/pw-core": "0.4.0-alpha.9",
+    "@nervosnetwork/ckb-types": "^0.39.0",
+    "ckb-js-toolkit": "^0.10.2",
+    "ethers": "^5.4.1",
+    "json-rpc-2.0": "^0.2.16"
+  },
+  "devDependencies": {
+    "@types/elliptic": "^6.4.13",
+    "typescript": "^4.2.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "http://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Roger-RumbleFish/nervos-godwoken-integration.git"
+  }
+}

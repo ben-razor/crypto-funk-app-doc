@@ -1,0 +1,13 @@
+{
+    "env": {
+      "es2020": true,  
+      "node": true,
+      "mocha": true
+    },
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+}

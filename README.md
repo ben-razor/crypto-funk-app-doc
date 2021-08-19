@@ -121,6 +121,11 @@ const CONFIG = {
 	ETH_ACCOUNT_LOCK_CODE_HASH: '0xdeec13a7b8e100579541384ccaf4b5223733e4a5483c3aec95ddc4c1d5ea5b22'
 };
 
+/**
+ * Configure Web3 to interact with Nervos L2 network.
+ * 
+ * @returns A Web3 object configured for use with Nervos L2 network
+ */
 async function createWeb3() {
     if (window.ethereum) {
         const godwokenRpcUrl = CONFIG.WEB3_PROVIDER_URL;
@@ -132,14 +137,6 @@ async function createWeb3() {
 
         const provider = new PolyjuiceHttpProvider(godwokenRpcUrl, providerConfig);
         const web3 = new Web3(provider || Web3.givenProvider);
-
-        try {
-            // Request account access if needed
-            await (window).ethereum.enable();
-        } catch (error) {
-            // User denied account access...
-        }
-
         return web3;
     }
 

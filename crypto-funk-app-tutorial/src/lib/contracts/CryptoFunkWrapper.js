@@ -17,16 +17,16 @@ export class CryptoFunkWrapper {
 
     async deploy(fromAddress, name, symbol, hash, img_count) {
         const deployTx = await (this.contract
-					.deploy({
-							data: CryptoFunkMarket.bytecode,
-							arguments: [name, symbol, hash, img_count]
-					})
-					.send({
-							...DEFAULT_SEND_OPTIONS,
-							from: fromAddress,
-							to: '0x0000000000000000000000000000000000000000'
-					})
-				);
+            .deploy({
+                data: CryptoFunkMarket.bytecode,
+                arguments: [name, symbol, hash, img_count]
+            })
+            .send({
+                ...DEFAULT_SEND_OPTIONS,
+                from: fromAddress,
+                to: '0x0000000000000000000000000000000000000000'
+            })
+        );
 
         this.useDeployed(deployTx.contractAddress);
 

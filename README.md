@@ -21,11 +21,11 @@ We call the ported app **Crypto Funk**. You can view it's source on GitHub:
 
 [Crypto Funk Github](https://github.com/ben-razor/crypto-funk-app/tree/main/src)
 
-In this article will focus on 3 source files:
+In this tutorial we will focus on 3 source files:
 
-1. [The ported Ethereum contract](https://github.com/ben-razor/crypto-funk-app/blob/main/contracts/CryptoFunkMarket.sol)
-2. [The main React App.js](https://github.com/ben-razor/crypto-funk-app/blob/main/src/App.js)
-3. [The contract wrapper CryptoFunkWrapper.js](https://github.com/ben-razor/crypto-funk-app/blob/main/src/lib/contracts/CryptoFunkWrapper.js)
+1. [The ported Ethereum contract](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/crypto-funk-app-tutorial/contracts/CryptoFunkMarket.sol)
+2. [The main React App.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/src/App.js)
+3. [The contract wrapper CryptoFunkWrapper.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/src/lib/contracts/CryptoFunkWrapper.js)
 
 To port the app, we take the following steps.
 

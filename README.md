@@ -165,6 +165,56 @@ Most of the problems centered around the use of class properties and ES2020 opti
 
 [Modified Godwoken integration source code](https://github.com/ben-razor/crypto-funk-app-doc/tree/main/modified-src/nervos-godwoken-integration/lib)
 
-**We would not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
+> :warning: **We would not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
 
+### 4. Continuing to modify the front end code
+
+Once the errors in the Godwoken integration node modules are patched, we can set to integrating these modules into the ported front end code.
+
+First we add the web3 node module that will be used to communicate with the Nervos network:
+
+```bash
+yarn add web3
+```
+
+```javascript
+import Web3 from 'web3';
+```
+
+We then create a function to create a web3 object configured with a Polyjuice provider (Note that you need a wallet like [MetaMask](https://metamask.io/) installed as this provides window.ethereum to your Javascript app in the browser):
+
+```javascript
+
+const CONFIG = {
+	WEB3_PROVIDER_URL: 'https://godwoken-testnet-web3-rpc.ckbapp.dev',
+	ROLLUP_TYPE_HASH: '0x4cc2e6526204ae6a2e8fcf12f7ad472f41a1606d5b9624beebd215d780809f6a',
+	ETH_ACCOUNT_LOCK_CODE_HASH: '0xdeec13a7b8e100579541384ccaf4b5223733e4a5483c3aec95ddc4c1d5ea5b22'
+};
+
+async function createWeb3() {
+    if (window.ethereum) {
+        const godwokenRpcUrl = CONFIG.WEB3_PROVIDER_URL;
+        const providerConfig = {
+            rollupTypeHash: CONFIG.ROLLUP_TYPE_HASH,
+            ethAccountLockCodeHash: CONFIG.ETH_ACCOUNT_LOCK_CODE_HASH,
+            web3Url: godwokenRpcUrl
+        };
+
+        const provider = new PolyjuiceHttpProvider(godwokenRpcUrl, providerConfig);
+        const web3 = new Web3(provider || Web3.givenProvider);
+
+        try {
+            // Request account access if needed
+            await (window).ethereum.enable();
+        } catch (error) {
+            // User denied account access...
+        }
+
+        return web3;
+    }
+
+    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    return null;
+}
+```
 

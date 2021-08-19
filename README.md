@@ -27,7 +27,7 @@ In this article will focus on 3 source files:
 2. [The main React App.js](https://github.com/ben-razor/crypto-funk-app/blob/main/src/App.js)
 3. [The contract wrapper CryptoFunkWrapper.js](https://github.com/ben-razor/crypto-funk-app/blob/main/src/lib/contracts/CryptoFunkWrapper.js)
 
-To port the app, we took the following steps.
+To port the app, we take the following steps.
 
 ### 1. Prepare the contract for porting
 

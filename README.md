@@ -31,7 +31,7 @@ To port the app, we took the following steps.
 
 ### 1. Prepare the contract for porting
 
-The [Solidity Smart Contract](https://github.com/larvalabs/cryptopunks/blob/master/contracts/CryptoPunksMarket.sol) for Crypto Punks is open source under the MIT licence but the artwork is not covered by the licence.
+The [Solidity Smart Contract](https://github.com/larvalabs/cryptopunks/blob/master/contracts/CryptoPunksMarket.sol) for Crypto Punks is open source under the MIT licence but the artwork is not covered by the licence, so we need to remove the data that is specific to the artwork and provide a way to provide our own artwork.
 
 The smart contract contains SHA-256 hash of the image containing all the crypto punks so that a buyer can verify the image they have is official.
 

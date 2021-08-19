@@ -310,18 +310,10 @@ Once the contract has been deployed, we are returned an address (_contract.addre
 We add the following code to App.js to load the contract using the returned contract address.
 
 ```javascript
-
    const CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS = '0xEf948E02165551c7b9EfFCE1d5dACA0D270D5aA3';
+```
 
-   const setExistingContractAddress = async function (contractAddress) {
-        setTransactionInProgress(true);
-        const _contract = new CryptoFunkWrapper(web3);
-        _contract.useDeployed(contractAddress.trim());
-
-        setContract(_contract);
-        setStoredValue(undefined);
-    }
-
+```javascript
     useEffect(() => {
         if(web3) {
             setExistingContractAddress(CRYPTO_FUNK_SUPER_OFFICIAL_ADDRESS);

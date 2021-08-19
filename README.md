@@ -150,34 +150,44 @@ In a helper file called CryptoFunkWrapper.js, we add the JSON outputted by the T
 ```javascript 
 import * as CryptoFunkMarket from './CryptoFunkMarket.json';
 
+const DEFAULT_SEND_OPTIONS = {
+    gas: 6000000
+};
+
+/**
+ * Class with helper methods to deploy and interact with the Crypto Funk contract.
+ */
 export class CryptoFunkWrapper {
+
     constructor(web3) {
         this.address = null;
-	this.web3 = web3;
-	this.contract = new web3.eth.Contract(CryptoFunkMarket.abi);
+        this.web3 = web3;
+        this.contract = new web3.eth.Contract(CryptoFunkMarket.abi);
     }
 
     async deploy(fromAddress, name, symbol, hash, img_count) {
-	const deployTx = await (this.contract
-		.deploy({
-				data: CryptoFunkMarket.bytecode,
-				arguments: [name, symbol, hash, img_count]
-		})
-		.send({
-				...DEFAULT_SEND_OPTIONS,
-				from: fromAddress,
-				to: '0x0000000000000000000000000000000000000000'
-		})
-		);
+        const deployTx = await (this.contract
+            .deploy({
+                data: CryptoFunkMarket.bytecode,
+                arguments: [name, symbol, hash, img_count]
+            })
+            .send({
+                ...DEFAULT_SEND_OPTIONS,
+                from: fromAddress,
+                to: '0x0000000000000000000000000000000000000000'
+            })
+        );
 
-	this.useDeployed(deployTx.contractAddress);
+        this.useDeployed(deployTx.contractAddress);
+
+        return deployTx.transactionHash;
     }
-    
+
     useDeployed(contractAddress) {
         this.address = contractAddress;
         this.contract.options.address = contractAddress;
     }
-}
+
 ```
 
 Back in our main App.js file we use these helpers to deploy the contract:

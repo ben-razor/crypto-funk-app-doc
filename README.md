@@ -90,92 +90,14 @@ DApps on the web communicate with Ethereum using a library called web3.js.
 Nervos DApps are no different but as Nervos has a different system design to Ethereum, it must provide its own interface. In web3.js, this means supplying a custom *provider*.
 
 ```bash
-yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6
+yarn add @polyjuice-provider/web3@0.0.1-rc7
 ```
 
-This command installs two modules. The first is for the Polyjuice provider. The second is for integration with **Godwoken**. Godwoken is the Nervos layer two network where the ported Ethereum app will be deployed.
-
-The packages are brought into your React application by using imports in App.js:
+The package is brought into your React application by using an import in App.js:
 
 ```javascript
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
-import { AddressTranslator } from 'nervos-godwoken-integration';
 ```
-
-### WARNING: Javascript Features used in these libraries are not supported by create-react-app
-
-> :warning: At the time of writing the libraries errored due to new Javascript features that create-react-app is not set up to understand:
-```
-Support for the experimental syntax 'classProperties' isn't currently enabled
-
-You may need an additional loader to handle the result of these loaders.
-| 
-| class BridgeRPCHandler {
->   client;
-| 
-|   constructor(forceBridgeUrl) {
-```
-
-We tried multiple techniques to get around these errors but none of them would work. In the end we deleted and modified the offending elements in the nervos-godwoken-integration source in order to be able to complete the port in a reasonable time.
-
-```
-./node_modules/nervos-godwoken-integration/lib/bridge/force-bridge-handler.js 49:151
-Module parse failed: Unexpected token (49:151)
-File was processed with these loaders:
- * ./node_modules/react-scripts/node_modules/babel-loader/lib/index.js
-You may need an additional loader to handle the result of these loaders.
-| 
-|           const rawTx = result.rawTransaction;
->           rawTx.value = ethers_1.ethers.BigNumber.from(((_rawTx$value = rawTx.value) === null || _rawTx$value === void 0 ? void 0 : _rawTx$value.hex) ?? 0);
-|           result.rawTransaction = rawTx;
-|         }
-```
-
-This was changed to 
-```javascript
-{
-    const rawTx = result.rawTransaction;
-    let val = 0;
-    if(rawTx && rawTx.value) {
-        val = rawTx.value.hex;
-    }
-    rawTx.value = ethers_1.ethers.BigNumber.from(val);
-    result.rawTransaction = rawTx;
-}
-```
-
-```
-./node_modules/nervos-godwoken-integration/lib/address/index.js 57:9
-Module parse failed: Unexpected token (57:9)
-File was processed with these loaders:
- * ./node_modules/react-scripts/node_modules/babel-loader/lib/index.js
-You may need an additional loader to handle the result of these loaders.
-| 
-| class AddressTranslator {
->   _config;
-|   _deploymentConfig;
-    constructor(config) {
-        if (config) {
-            this._config = config;
-        }
-|
-```
-
-This was changed to:
-
-```javascript
-class AddressTranslator {
-    constructor(config) {
-        if (config) {
-            this._config = config;
-        }
-```
-
-Most of the problems centered around the use of class properties and ES2020 optional chaining. There were a number of other examples that needed changing in similar ways. The source code for these changes can be found here:
-
-[Modified Godwoken integration source code](https://github.com/ben-razor/crypto-funk-app-doc/tree/main/modified-src/nervos-godwoken-integration/lib)
-
-> :warning: **We do not recommend using this code. Better to wait for the libraries to be supplied with more widely supported Javascript features employed, or for the methods to support these features within React to be documented.** 
 
 ### 4. Continuing to modify the front end code
 

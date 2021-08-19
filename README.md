@@ -309,9 +309,11 @@ In order to deploy the contract, MetaMask must be configured to point at the God
 
 At the time of writing the following details should be used to connect to the Godwoken testnet:
 
-Network Name: Godwoken Testnet
-New RPC URL: http://godwoken-testnet-web3-rpc.ckbapp.dev
-Chain ID: 71393
+**Network Name**: Godwoken Testnet
+
+**New RPC URL**: http://godwoken-testnet-web3-rpc.ckbapp.dev
+
+**Chain ID**: 71393
 
 This opens the app in the browser and the deployContract() method is assigned to a button handler.
 

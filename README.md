@@ -4,7 +4,7 @@ Ethereum as a platform has been a launchpad for popular DApps from DeFi to NFTs 
 
 In this article, we take you through the process of porting an existing DApp from Ethereum to Nervos.
 
-Nervos is a dual layer system. A proof of work Layer 1 provides security while layer 2 allows fast DApps to be deployed using code from existing blockchains. At present, DApps for the Ethereum Virtual Machine are supported. Nervos plan to provide support for more platforms in the future.
+Nervos is a dual layer system. A proof of work Layer 1 provides security while layer 2 allows fast DApps to be deployed using code from existing blockchains. At present, DApps for the Ethereum Virtual Machine are supported. Nervos plans to provide support for more platforms in the future.
 
 An additional strength of deploying to Nervos is that it allows mixing and matching of wallets from various blockchains for use with the deployed DApp.
 

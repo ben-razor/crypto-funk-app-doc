@@ -1,4 +1,4 @@
-## How to port an Ethereum DApp To Nervos Network
+## How to port a Classic Ethereum DApp To Nervos Network
 
 Ethereum as a platform has been a launchpad to popular DApps from DeFi to NFTs and more. As blockchain technology develops, interoperability of different chains will become ever more important. [Nervos Network](https://www.nervos.org/) has a new platform for DApps that focuses on interoperability of DApps from different blockchains.
 

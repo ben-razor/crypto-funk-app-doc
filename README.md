@@ -187,6 +187,8 @@ First we add the web3 node module that will be used to communicate with the Nerv
 yarn add web3
 ```
 
+And add this to the includes in App.js:
+
 ```javascript
 import Web3 from 'web3';
 ```

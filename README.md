@@ -85,7 +85,21 @@ cd crypto-funk-app
 yarn start
 ```
 
+#### Set up imports
+
 DApps on the web communicate with Ethereum using a library called web3.js. 
+
+We add the web3 module that will be used to communicate with the Nervos network on the command line:
+
+```bash
+yarn add web3
+```
+
+And add this to the includes in App.js:
+
+```javascript
+import Web3 from 'web3';
+```
 
 Nervos DApps are no different but as Nervos has a different system design to Ethereum, it must provide its own interface. In web3.js, this means supplying a custom *provider*.
 
@@ -99,17 +113,13 @@ The package is brought into your React application by using an import in App.js:
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 ```
 
-Next we add the web3 node module that will be used to communicate with the Nervos network:
-
-```bash
-yarn add web3
-```
-
-And add this to the includes in App.js:
+A quirk to watch out for is that although contract methods will be called with an Ethereum address. Addresses returned by the contract are Godwoken addresses. Nervos suggest importing nervos-godwoken-integration@0.0.6. This allows Ethereum addresses to be converted into Godwoken addresses. This didn't play well with React so the module is included in the Crypto Funk source and imported locally:
 
 ```javascript
-import Web3 from 'web3';
+import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 ```
+
+#### Create deployment functions
 
 Now we can create a function to create a web3 object configured with a Polyjuice provider (Note that you need a wallet like [MetaMask](https://metamask.io/) installed as this provides window.ethereum to your JavaScript app in the browser):
 
@@ -145,7 +155,7 @@ async function createWeb3() {
 }
 ```
 
-In a helper file called CryptoFunkWrapper.js, we add the JSON outputted by the Truffle compiler to our includes, and then add a function to use the web3 interface to deploy our contract:
+Next we create a helper file called CryptoFunkWrapper.js, we include the JSON outputted by the Truffle compiler, and then add a function to use the web3 interface to deploy our contract:
 
 ```javascript 
 import * as CryptoFunkMarket from './CryptoFunkMarket.json';
@@ -190,7 +200,7 @@ export class CryptoFunkWrapper {
 }
 ```
 
-Back in our main App.js file we use these helpers to deploy the contract:
+Back in our main App.js file we use those helpers to deploy the contract:
 
 ```javascript
 function App() {
@@ -210,6 +220,13 @@ function App() {
 
             const _accounts = [window.ethereum.selectedAddress];
             setAccounts(_accounts);
+
+            (async () => {
+                window.ethereum.on("accountsChanged", async function() {
+                    let newAccounts = [window.ethereum.selectedAddress];
+                    setAccounts(newAccounts);
+                });
+            })();
         })();
     });
 

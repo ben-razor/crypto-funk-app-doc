@@ -350,7 +350,7 @@ And then in our App.js we call these helper functions and update the interface:
 
 If you need to see how this all fits together don't forget to check the source in [App.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/crypto-funk-app-tutorial/src/App.js) and [CryptoFunkWrapper.js](https://github.com/ben-razor/crypto-funk-app-doc/blob/main/crypto-funk-app-tutorial/src/lib/contracts/CryptoFunkWrapper.js). This also shows how the other contract methods link up to display the completed UI.
 
-Only the getPunk method to claim Crytpo Funks with no owner is implemented in this tutorial. All the other methods follow the same pattern so you're free to create your own set of classic NFTs and add in the code to trade them.
+Only the getPunk method to claim Crypto Funks with no owner is implemented in this tutorial. All the other methods follow the same pattern so you're free to create your own set of classic NFTs and add in the code to trade them.
 
 ### 8. Wrapping Up
 
